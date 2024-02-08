@@ -13,11 +13,11 @@ const initialState = {
 class DigitalTimer extends Component {
   state = initialState
 
-  clearTimerInterval = clearInterval(this.intervalId)
-
   componentWillUnmount() {
-    this.clearInterval()
+    this.clearTimerInterval()
   }
+
+  clearTimerInterval = () => clearInterval(this.intervalId)
 
   onDecreaseTimerInMinutes = () => {
     const {isTimerLimitInMinutes} = this.state
@@ -34,7 +34,7 @@ class DigitalTimer extends Component {
       isTimerLimitInMinutes: prevState.isTimerLimitInMinutes + 1,
     }))
 
-  renderTimerController = () => {
+  renderTimerLimitController = () => {
     const {isTimerInSeconds, isTimerLimitInMinutes} = this.state
     const buttonDisabled = isTimerInSeconds > 0
 
@@ -76,7 +76,7 @@ class DigitalTimer extends Component {
     const isTimerComplete = isTimerInSeconds === isTimerLimitInMinutes * 60
 
     if (isTimerComplete) {
-      this.clearInterval()
+      this.clearTimerInterval()
       this.setState({isTimerRunning: false})
     } else {
       this.setState(prevState => ({
@@ -93,7 +93,7 @@ class DigitalTimer extends Component {
       this.setState({isTimerInSeconds: 0})
     }
     if (isTimerRunning) {
-      this.clearInterval()
+      this.clearTimerInterval()
     } else {
       this.intervalId = setInterval(this.incrementTimeInSeconds, 1000)
     }
@@ -149,7 +149,7 @@ class DigitalTimer extends Component {
     const stringifyMinutes = minutes > 9 ? minutes : `0${minutes}`
     const stringifySeconds = seconds > 9 ? seconds : `0${seconds}`
 
-    return `${stringifyMinutes}: ${stringifySeconds}`
+    return `${stringifyMinutes}:${stringifySeconds}`
   }
 
   render() {
